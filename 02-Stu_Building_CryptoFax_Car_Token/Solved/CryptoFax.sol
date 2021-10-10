@@ -40,11 +40,27 @@ contract CryptoFax is ERC721Full {
         uint accidents;
     }
 
+    struct portfolio_type {
+
+    }
+
     // Stores token_id => Car
     // Only permanent data that you would need to use within the smart contract later should be stored on-chain
     mapping(uint => Car) public cars;
 
+    int public x;
     event Accident(uint token_id, string report_uri);
+
+
+
+
+    mapping(string => uint) public _portfolio;
+    function buildPortfolio(id, portfolio) public returns(bool) {
+        _portfolio = portfolio;
+        return true;
+    }
+//    function buildPortfolio(price_prediction, valuation, customer_metrics) public returns(portfolio_type portfolio) {
+//    }
 
     function registerVehicle(address owner, string memory vin, string memory token_uri) public returns(uint) {
         token_ids.increment();
@@ -60,6 +76,7 @@ contract CryptoFax is ERC721Full {
 
     function reportAccident(uint token_id, string memory report_uri) public returns(uint) {
         cars[token_id].accidents += 1;
+        x += 1;
 
         // Permanently associates the report_uri with the token_id on-chain via Events for a lower gas-cost than storing directly in the contract's storage.
         emit Accident(token_id, report_uri);
